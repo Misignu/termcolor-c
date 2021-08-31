@@ -70,20 +70,15 @@ extern "C" {
 #define ANSI_CODE_BG_WHITE   "\033[47m"
 
 /* TODO: Maybe non-TTYs support color? idk */
-bool supports_color(FILE* stream) {
-    return isatty(fileno(stream));
-}
+bool supports_color(FILE *stream);
 
 /**
  * These functions affect the appearance of text, i.e. the foreground, in the stream
  */
 #define DEFUN_T(c, code) \
-    FILE* text_##c(FILE* stream) { \
-        if (supports_color(stream)) { \
-            fputs(ANSI_CODE_##code, stream); \
-        } \
-        return stream; \
-    }
+    FILE* text_##c(FILE* stream);
+
+
 DEFUN_T(bold, BOLD);
 DEFUN_T(dark, DARK);
 DEFUN_T(underline, UNDERLINE);
@@ -101,16 +96,12 @@ DEFUN_T(cyan, CYAN);
 DEFUN_T(white, WHITE);
 #undef DEFUN_T
 
+
 /**
  * These functions affect the appearance of the background of text in the stream
  */
-#define DEFUN_B(c, code) \
-    FILE* background_##c(FILE* stream) { \
-        if (supports_color(stream)) { \
-            fputs(ANSI_CODE_BG_##code, stream); \
-        } \
-        return stream; \
-    }
+#define DEFUN_B(c, code);
+
 DEFUN_B(gray, GRAY);
 DEFUN_B(grey, GREY);
 DEFUN_B(red, RED);
@@ -122,11 +113,7 @@ DEFUN_B(cyan, CYAN);
 DEFUN_B(white, WHITE);
 #undef DEFUN_B
 
-void reset_colors(FILE* stream) {
-    if (supports_color(stream)) {
-        fputs(ANSI_CODE_RESET, stream);
-    }
-}
+void reset_colors(FILE* stream);
 
 #ifdef __cplusplus
 }
